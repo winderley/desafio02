@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+
+  app:
+    build:
+      context: node
+    #image: nodet
+    container_name: app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+    command: npm start
+    volumes:
+      - ./node/app:/usr/src/app
+    tty: true
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - node-network      
+
+  app2:
+    build:
+      context: node
+    #image: nodet
+    container_name: app2
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 50s docker-entrypoint.sh
+    command: npm run-script start2
+    volumes:
+      - ./node/app:/usr/src/app
+    tty: true
+    ports:
+      - "3001:3000"
+    depends_on:
+      - db
+    networks:
+      - node-network      
+
+  db:
+    image: mysql:5.6
+    command: --innodb-use-native-aio=0
+    container_name: db
+    restart: always
+    tty: true
+    volumes:
+      - ./mysql:/var/lib/mysql
+      - ./scripts_sql:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_DATABASE=nodedb
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - node-network
+
+  nginx:
+    build:
+      context: nginx  
+    #image: nginx:desafio02
+    #command: --innodb-use-native-aio=0
+    container_name: nginx
+    #restart: always
+    tty: true
+    ports:
+      - 8080:80
+    #volumes:
+    #  - ./mysql:/var/lib/mysql
+    #environment:
+    #  - MYSQL_DATABASE=nodedb
+    #  - MYSQL_ROOT_PASSWORD=root
+    depends_on:
+      - app
+      - app2
+    networks:
+      - node-network
+
+networks:
+    node-network:
+      driver: bridge
