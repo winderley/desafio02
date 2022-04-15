@@ -4,7 +4,7 @@ A seguir serão descritas as etapas e o funcionamento da aplicação para aender
 
 DESCRIÇÃO DA APLICAÇÃO:
 
-Comando GET no endereço localhost:8080 faz um link com uma dos 2 containeires rodando aplicação node js (APP e APP2) que acessam o banco Mysql, trazendo a lista de usuários cadastrados na tabela people.
+Comando GET no endereço localhost:8080 faz um link com um dos 2 containeires rodando aplicação node js (APP e APP2) que acessam o banco Mysql, trazendo a lista de usuários cadastrados na tabela people.
 
 Na apesentação do resultado são exibidos a mensagem "Full Cycle !!" e a informação do aplicação node js utilizada "APP 1111" ou "APP 2222", conforme são acessados os containeres app e app2 e a lista de usuários cadastrados na tabela people (não foi realizada a formatação das mensagens de saída ou tratamento dos dados, por entender que não fazia parte do desafio).
 
