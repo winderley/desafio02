@@ -5,12 +5,9 @@ services:
   app:
     build:
       context: node
-    #image: nodet
     container_name: app
     entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
     command: npm start
-    volumes:
-      - ./node/app:/usr/src/app
     tty: true
     ports:
       - "3000:3000"
@@ -22,12 +19,9 @@ services:
   app2:
     build:
       context: node
-    #image: nodet
     container_name: app2
     entrypoint: dockerize -wait tcp://db:3306 -timeout 50s docker-entrypoint.sh
     command: npm run-script start2
-    volumes:
-      - ./node/app:/usr/src/app
     tty: true
     ports:
       - "3001:3000"
@@ -54,18 +48,10 @@ services:
   nginx:
     build:
       context: nginx  
-    #image: nginx:desafio02
-    #command: --innodb-use-native-aio=0
     container_name: nginx
-    #restart: always
     tty: true
     ports:
       - 8080:80
-    #volumes:
-    #  - ./mysql:/var/lib/mysql
-    #environment:
-    #  - MYSQL_DATABASE=nodedb
-    #  - MYSQL_ROOT_PASSWORD=root
     depends_on:
       - app
       - app2
